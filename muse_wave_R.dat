@@ -1,0 +1,13 @@
+# Spectral resolution of MUSE spectrograph according to the ESO webpage
+# Data obtained from figure 11 in the webpage: https://www.eso.org/sci/facilities/paranal/instruments/muse/doc/VLT-MAN-MUS-14670-1477-1.0.pdf
+#Wave(nm) R
+478.49	1654.18
+511.83	1821.33
+541.94	1971.18
+570.97	2121.04
+634.41	2443.80
+713.98	2818.44
+770.97	3066.28
+835.48	3302.59
+898.92	3481.27
+927.96	3538.90
