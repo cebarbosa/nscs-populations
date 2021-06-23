@@ -98,6 +98,12 @@ def prepare_data(sigma=100, r=3, r1=5, r2=8, plot=False, redo=False):
     names = ["NSC", "Annulus"]
     locations = [f"r_{r}", f"r1_{r1}_r2_{r2}"]
     wdir = os.path.join(context.home_dir, "data/nscs_sample")
+    pb_dir = os.path.join(context.home_dir, "paintbox")
+    outdir = os.path.join(pb_dir, f"sigma{sigma}")
+    for path in [pb_dir, outdir]:
+        if not os.path.exists(path):
+            os.mkdir(path)
+
     galaxies = os.listdir(wdir)
     muse_fwhm = get_muse_fwhm()
     outfiles = []
@@ -110,10 +116,12 @@ def prepare_data(sigma=100, r=3, r1=5, r2=8, plot=False, redo=False):
         plt.plot(wave, FWHM_vel(outres))
         plt.show()
     for galaxy in galaxies:
-        print(galaxy)
-        gal_dir = os.path.join(wdir, galaxy)
+        indir = os.path.join(wdir, galaxy)
         outname = f"{galaxy}_r_{r}_r1_{r1}_r2_{r2}_sig_{sigma}.fits"
-        output = os.path.join(gal_dir, outname)
+        galdir = os.path.join(outdir, galaxy)
+        if not os.path.exists(galdir):
+            os.mkdir(galdir)
+        output = os.path.join(galdir, outname)
         outfiles.append(output)
         if os.path.exists(output) and not redo:
             continue
@@ -121,10 +129,10 @@ def prepare_data(sigma=100, r=3, r1=5, r2=8, plot=False, redo=False):
         for name, loc in zip(names, locations):
             flux_file = f"{name}_spec_from_cube_sum_{loc}.fits"
             var_file = f"{name}_variance_from_cube_sum_{loc}.fits"
-            flux = fits.getdata(os.path.join(gal_dir, flux_file))
-            fluxvar= fits.getdata(os.path.join(gal_dir, var_file))
+            flux = fits.getdata(os.path.join(indir, flux_file))
+            fluxvar= fits.getdata(os.path.join(indir, var_file))
             fluxerr = np.sqrt(fluxvar)
-            spec1d =  Spectrum1D.read(os.path.join(gal_dir, flux_file))
+            spec1d =  Spectrum1D.read(os.path.join(indir, flux_file))
             wave = spec1d.spectral_axis.to(u.Angstrom).value
             inres = muse_fwhm(wave)
             outres = sigma / const.c.to("km/s").value * wave * 2.634

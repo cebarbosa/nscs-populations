@@ -247,7 +247,7 @@ def run_nscs(sigma=100, r=3, r1=5, r2=8, nsteps=6000, redo=False):
     """ Run paintbox on test galaxies. """
     global logp
     global priors
-    wdir = os.path.join(context.home_dir, "data/nscs_sample")
+    wdir = os.path.join(context.home_dir, f"paintbox/sigma{sigma}")
     galaxies = os.listdir(wdir)
     vels = {"FCC223": 900}
     for galaxy in galaxies:
@@ -285,7 +285,6 @@ def run_nscs(sigma=100, r=3, r1=5, r2=8, nsteps=6000, redo=False):
         # if platform.node() == "kadu-Inspiron-5557":
         #     plot_fitting(wave, flux, fluxerr, sed, trace,  outdb,
         #                  mask=mask, galaxy=galaxy)
-
 
 if __name__ == "__main__":
     run_nscs()
